@@ -1,3 +1,4 @@
+require('dotenv').config();
 const {Client, IntentsBitField} = require('discord.js')
 
 const client = new Client({
@@ -9,14 +10,25 @@ const client = new Client({
     ],
 });
 
+//visual indicator via console log that bot is online and listening
 client.on('ready', (c) => {
-    console.log('The White Whale is hunting whalers, better run...')
+    console.log('Moby is hunting whalers, better run...')
 })
 
+//logs bot into discord using given token found in .env file
+client.login(process.env.TOKEN);
 
-client.login("MTEyNzA3MTg3MTAwMzc5NTU4Nw.GFQP4U.RlMhpl3UKWF7q6o-EYAs10i5mwCmRIvSK2jNdQ");
-
-
+//bot listens for primary string in any chat, if primary string matches given string then responds with a new string with author of primary strings username
 client.on('messageCreate', (message) => {
-    console.log(message);
+    if(message.content === "Hello Moby"){
+        message.reply(`*Splashes water at ${message.author.username}*`)
+    }
+})
+
+//bot listens for slash command hey, and if command is used then bot responds with string
+client.on('interactionCreate', (interaction) => {
+    if(!interaction.isChatInputCommand()) return;
+    if(interaction.commandName === 'hey'){
+        interaction.reply("Hey, howzit swimming?")
+    }
 })
